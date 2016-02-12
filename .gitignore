@@ -3,4 +3,5 @@
 /resources/assets/node_modules
 Homestead.yaml
 Homestead.json
+/public/dist
 .env

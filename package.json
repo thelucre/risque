@@ -1,7 +1,7 @@
 {
 	"private": true,
-	"name": "camo",
-	"version": "3.0.5",
+	"name": "risque",
+	"version": "0.0.1",
 	"dependencies": {
 		"apply-loader": "^0",
 		"assets-webpack-plugin": "^3.2.0",
@@ -54,8 +54,8 @@
 
 		"webpack": "node_modules/.bin/webpack",
 
-		"dev": "printf \"\\e]2;$(cd ../ && basename $(pwd))\\a\" && printf \"\\e]1;Webpack - Dev\\a\" && node_modules/.bin/webpack-dev-server --hot --inline",
+		"dev": "node_modules/.bin/webpack-dev-server --hot --inline",
 
-		"watch": "printf \"\\e]2;$(cd ../ && basename $(pwd))\\a\" && printf \"\\e]1;Webpack - Watch\\a\" && node_modules/.bin/webpack --watch"
+		"watch": "node_modules/.bin/webpack --watch"
 	}
 }
