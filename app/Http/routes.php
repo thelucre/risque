@@ -22,9 +22,9 @@ function layout($view, $vars = []) {
 |
 */
 
-Route::get('/', function () {
-		return layout('pages.home');
-});
+// Route::get('/', function () {
+//
+// });
 
 /*
 |--------------------------------------------------------------------------
@@ -39,4 +39,14 @@ Route::get('/', function () {
 
 Route::group(['middleware' => ['web']], function () {
 		//
+});
+
+Route::group(['middleware' => 'web'], function () {
+		Route::auth();
+
+		Route::get('/home', 'HomeController@index');
+
+		Route::get('/', function() {
+			return layout('pages.home');
+		});
 });
