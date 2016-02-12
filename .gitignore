@@ -5,3 +5,4 @@ Homestead.yaml
 Homestead.json
 /public/dist
 .env
+npm-debug.log
