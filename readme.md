@@ -5,8 +5,11 @@
 * Add `.env` file with these settings:
 	```
 	DB_HOST=localhost
+	
 	DB_DATABASE=risque
+	
 	DB_USERNAME=root
+	
 	DB_PASSWORD=root
 	```
 * Add initial users with `php artisan db:seed --class=RegularUsers`
