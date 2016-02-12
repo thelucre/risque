@@ -49,4 +49,7 @@ Route::group(['middleware' => 'web'], function () {
 		Route::get('/', function() {
 			return layout('pages.home');
 		});
+
+		Route::get('/game', 'GameController@index');
+		Route::get('/game/new', 'GameController@newGame');
 });
