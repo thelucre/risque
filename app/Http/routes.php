@@ -1,5 +1,16 @@
 <?php
 
+/**
+ * Define layout and a helper method to DRY up the use of the layout.
+ *
+ * @param $view string The name of the view file, like "home.index"
+ * @param $vars array Key-val pairs of data to pass to the view
+ * @return Illuminate\View\Factory
+ */
+function layout($view, $vars = []) {
+	return View::make('layouts.default')->nest('content', $view, $vars);
+}
+
 /*
 |--------------------------------------------------------------------------
 | Routes File
@@ -12,7 +23,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+		return layout('pages.home');
 });
 
 /*
@@ -27,5 +38,5 @@ Route::get('/', function () {
 */
 
 Route::group(['middleware' => ['web']], function () {
-    //
+		//
 });

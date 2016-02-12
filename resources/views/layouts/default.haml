@@ -1,0 +1,32 @@
+!!!
+%html
+	%head
+		%title Risque
+
+		-# Boilerplate meta tags
+		%meta(charset='utf-8')
+		%meta(http-equiv='X-UA-Compatible' content='IE=edge')
+		%meta(name='viewport' content='width=device-width, initial-scale=1.0')
+		%meta(name='msapplication-tap-highlight' content='no')
+
+		-# -# Inject page meta tags
+		-# != Layout::meta()
+
+		-# CSRF token for lifting out by JS for AJAX requests
+		%meta(name='csrf-token' content=csrf_token())
+
+		-# -# Inline Modernizr as described by the author:
+		-# -# https://github.com/Modernizr/Modernizr/issues/1204#issuecomment-142143094
+		-# %script(type="text/javascript")
+		-# 	!= file_get_contents(base_path('resources/assets/vendor/modernizr.js'))
+
+		-# Stylesheets
+		-# != Layout::webpackAssetTag('app.css')
+
+	%body
+
+		-# Markup
+		#main!= $content
+
+		-# JS
+		-# != Layout::webpackAssetTag('app.js')
