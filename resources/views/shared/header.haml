@@ -1,0 +1,6 @@
+#header
+	-if($user = Auth::user())
+		Welcome, #{$user->name}.
+		%a(href='/logout') Logout
+	-else
+		%a(href='/login') Login

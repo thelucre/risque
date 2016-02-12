@@ -25,9 +25,12 @@
 		!= $layout->webpackAssetTag('app.css')
 
 	%body
+		!= View::make('shared.header')
 
 		-# Markup
 		#main!= $content
+
+		!= View::make('shared.footer')
 
 		-# JS
 		!= $layout->webpackAssetTag('app.js')

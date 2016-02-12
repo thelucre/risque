@@ -1,8 +1,5 @@
 %h1 Get Risque, Dwags.
 
--if($user = Auth::user())
-	%p You're logged in as #{$user->email}
-	%a(href='/logout') Logout
+%a(href=route('new game')) New Game
 
--else
-	%a(href='/login') Login
+%h4 All Games

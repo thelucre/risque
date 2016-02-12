@@ -47,9 +47,9 @@ Route::group(['middleware' => 'web'], function () {
 		Route::get('/home', 'HomeController@index');
 
 		Route::get('/', function() {
-			return layout('pages.home');
+			return layout('pages.home', ['user' => Auth::user()]);
 		});
 
 		Route::get('/game', 'GameController@index');
-		Route::get('/game/new', 'GameController@newGame');
+		Route::get('/game/new', 'GameController@newGame')->name('new game');
 });
