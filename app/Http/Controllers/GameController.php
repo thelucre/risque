@@ -21,24 +21,22 @@ class GameController extends Controller
 			$this->middleware('auth');
 	}
 
-	public function index() {
-		return layout('pages.game.index');
+	public function index($id = null) {
+		if(empty($id)) App::abort(404);
+		$game = Game::with('users')->findOrFail($id);
+		return layout('pages.game.index', ['game' => $game]);
 	}
 
 	public function newGame() {
 		return layout('pages.game.new');
 	}
 
-	public function createNewGame() {
-		$game = Game::create();
-		foreach(User::all() as $i => $user) {
-			$game->users()->attach($user, [
-				'color' => Game::$colors[$i],
-				'name' => $user->name,
-				'turnt' => ($i==0),
-			]);
-
+	public function createNewGame(Request $request) {
+		if(Game::createNew($request->all())) {
+			return redirect()->route('home');
 		}
-		dd($game);
+
+		echo('failed to make game');
+		dd($request->all());
 	}
 }

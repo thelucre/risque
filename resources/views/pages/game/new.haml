@@ -1,9 +1,16 @@
 %h1 New Game
 
 -$users = App\User::get()
--foreach($users as $user)
-	%p=$user->name
+
 
 !=Former::open(route('create new game'))
-!=Former::submit('Start')
+
+-foreach($users as $i => $user)
+	%p
+
+		%input(type="checkbox" name="users[]" value=$user->id
+			checked="checked" readonly)
+		%span=$user->email
+
+!=Former::submit('Make war, nay love.')
 !=Former::close()

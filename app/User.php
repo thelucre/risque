@@ -27,7 +27,7 @@ class User extends Authenticatable
 	/**
 	 * The games played by this user
 	 */
-	public function users()
+	public function games()
 	{
 			return $this->belongsToMany('App\Game');
 	}

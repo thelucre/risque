@@ -1,5 +1,10 @@
+-$user = Auth::user()
+
 %h1 Get Risque, Dwags.
 
 %a(href=route('new game')) New Game
 
 %h4 All Games
+
+-foreach($user->games as $game)
+	%li=$game->name

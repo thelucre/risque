@@ -1,1 +1,8 @@
-%h1 Games
+%h1 Game Board
+%h3=$game->name
+
+-foreach($game->users as $user)
+	%li
+		=$user->pivot->name
+		-if($user->pivot->turnt)
+			%span(style="color:red;") [TURN]
