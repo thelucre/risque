@@ -27,8 +27,8 @@ class GameUserPivot extends Migration
 
 			// Create pivot for many to many relationship between games and players
 			Schema::create('game_user', function (Blueprint $table) {
-				$table->integer('game_id');
-				$table->integer('user_id');
+				$table->integer('game_id')->unsigned();
+				$table->integer('user_id')->unsigned();
 
 				// Game-specific settings for the player
 				$table->string('name');
@@ -41,7 +41,7 @@ class GameUserPivot extends Migration
 				$table->boolean('booted')->default(0);
 			});
 
-			Schema::table('game_user', function ($table) {
+			Schema::table('game_user', function (Blueprint $table) {
 				$table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 				$table->foreign('game_id')->references('id')->on('games')->onDelete('cascade');
 			});
