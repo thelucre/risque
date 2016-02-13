@@ -3,6 +3,7 @@
 
 -foreach($game->users as $user)
 	%li
+		%span(style="display: inline-block; height: 30px; width: 30px; background-color:#{$user->pivot->color}")
 		=$user->pivot->name
 		-if($user->pivot->turnt)
 			%span(style="color:red;") [TURN]

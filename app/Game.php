@@ -19,6 +19,14 @@ class Game extends Model
 		'ramped' => 'Ramped',
 	];
 
+	public static $colors = [
+		'#fb1c1c',
+		'#09f219',
+		'#1221f9',
+		'#f2e80b',
+		'#b70df2',
+	];
+
 	/**
 	 * The users playing this game
 	 */
@@ -32,14 +40,6 @@ class Game extends Model
 			'booted'
 		);
 	}
-
-	public static $colors = [
-		'#fb1c1c',
-		'#09f219',
-		'#1221f9',
-		'#f2e80b',
-		'#b70df2',
-	];
 
 	public static function createNew($data = null) {
 		$game = self::create($data);
