@@ -7,7 +7,8 @@
 		"require": {
 				"php": ">=5.5.9",
 				"laravel/framework": "5.2.*",
-				"bkwld/laravel-haml": "^2.3"
+				"bkwld/laravel-haml": "^2.3",
+				"anahkiasen/former": "4.0.*@dev"
 		},
 		"require-dev": {
 				"fzaninotto/faker": "~1.4",
