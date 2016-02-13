@@ -7,4 +7,5 @@
 %h4 All Games
 
 -foreach($user->games as $game)
-	%li=$game->name
+	%li
+		%a(href=route('game index', $game->id))=$game->name
