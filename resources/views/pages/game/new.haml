@@ -5,6 +5,12 @@
 
 !=Former::open(route('create new game'))
 
+%h3 Settings
+!=Former::text('name', 'Game Name')->value('World War Thray')
+!=Former::checkbox('neutrals', 'Neutrals?')->check()
+!=Former::select('card_type')->options(App\Game::$card_settings)
+
+%h3 Players
 -foreach($users as $i => $user)
 	%p
 

@@ -1,11 +1,11 @@
--$user = Auth::user()
+-if($user = Auth::user())
 
-%h1 Get Risque, Dwags.
+	%h1 Get Risque, Dwags.
 
-%a(href=route('new game')) New Game
+	%a(href=route('new game')) New Game
 
-%h4 All Games
+	%h4 All Games
 
--foreach($user->games as $game)
-	%li
-		%a(href=route('game index', $game->id))=$game->name
+	-foreach($user->games as $game)
+		%li
+			%a(href=route('game index', $game->id))=$game->name

@@ -7,8 +7,16 @@ use App\User;
 
 class Game extends Model
 {
+
+	protected $fillable = ['name', 'card_type', 'neutrals'];
+
 	public static $rules = [
 		'users' => 'required|array'
+	];
+
+	public static $card_settings = [
+		'cycle' => 'Cycle',
+		'ramped' => 'Ramped',
 	];
 
 	/**
@@ -34,8 +42,8 @@ class Game extends Model
 	];
 
 	public static function createNew($data = null) {
-		// dd($data);
-		$game = self::create();
+		$game = self::create($data);
+		$game->neutrals = array_key_exists("neutrals",$data) ? 1 : 0;
 
 		// Link players to this game
 		foreach(User::all() as $i => $user) {
@@ -45,6 +53,8 @@ class Game extends Model
 				'turnt' => ($i==0),
 			]);
 		}
+
+		$game->save();
 
 		return true;
 	}
