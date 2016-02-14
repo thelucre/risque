@@ -1,5 +1,5 @@
 #header
-	-if($user = Auth::user())
+	-if($user)
 		Welcome, #{$user->name}.
 		%a(href='/logout') Logout
 	-else
