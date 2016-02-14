@@ -15,8 +15,7 @@ class AppServiceProvider extends ServiceProvider
 	public function boot()
 	{
 		// Global user context
-		View::composer('*', function($view)
-		{
+		View::composer('*', function($view) {
 			$view->with('user', Auth::user());
 		});
 	}

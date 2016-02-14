@@ -1,6 +1,9 @@
 #header
-	-if($user)
-		Welcome, #{$user->name}.
-		%a(href='/logout') Logout
-	-else
-		%a(href='/login') Login
+	%a.logo(href=route('home')) RISQUE
+
+	.nav
+		-if($user)
+			Welcome, #{$user->name}.
+			%a(href='/logout') Logout
+		-else
+			%a(href='/login') Login
