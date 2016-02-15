@@ -31,11 +31,11 @@ class Game extends Model
 	];
 
 	public static $colors = [
-		'Red' 		=> '#fb1c1c',
-		'Green' 	=> '#09f219',
-		'Blue' 		=> '#1221f9',
-		'Yellow'	=>'#f2e80b',
-		'Purple' 	=> '#b70df2',
+		'red' 		=> '#fb1c1c',
+		'green' 	=> '#09f219',
+		'blue' 		=> '#1221f9',
+		'yellow'	=>'#f2e80b',
+		'purple' 	=> '#b70df2',
 	];
 
 	/**
@@ -55,19 +55,18 @@ class Game extends Model
 	public static function createNew($data = null) {
 		$game = self::create($data);
 		$game->neutrals = array_key_exists("neutrals",$data) ? 1 : 0;
-		$game->state = self::$states['WAITING_FOR_PLAYERS'];
+		$game->changeState(self::$states['WAITING_FOR_PLAYERS']);
 
 		// Link players to this game
 		foreach(User::all() as $i => $user) {
 			$game->users()->attach($user, [
 				'name' => $user->name,
-				'turnt' => ($i==0),
 			]);
 		}
 
 		$game->save();
 
-		return true;
+		return $game;
 	}
 
 	/**
@@ -78,14 +77,60 @@ class Game extends Model
 	}
 
 
+	/**
+	 * Based on the current player settings, determine whic colors are still
+	 * available to choose
+	 */
 	public function getUnusedColorsAttribute() {
 		$colors = self::$colors;
 		foreach($this->users as $user) {
 			if($color = $user->pivot->color) {
-				$key = array_search($color, $colors);
-				unset($colors[$key]);
+				if(array_key_exists($color, $colors))
+					unset($colors[$color]);
 			}
 		}
 		return $colors;
+	}
+
+	/**
+	 *
+	 */
+	public function updatePlayerSettings($data) {
+		$player = $this->getPlayer($data['user_id']);
+
+		if(array_key_exists($data['color'], $this->unused_colors)
+			|| $player->pivot->color == $data['color']) {
+
+			$this->checkPlayersReady();
+			$player->pivot->color = $data['color'];
+			$player->pivot->name = $data['name'];
+			$player->pivot->save();
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * If all players have updated their settings, the game is ready to start
+	 */
+	public function checkPlayersReady() {
+		foreach($this->users as $user) {
+			if(empty($user->pivot->color)) return false;
+
+			$this->changeState(self::$states['PLAYER_TURN']);
+		}
+	}
+
+	/**
+	 * Update the game state
+	 */
+	public function changeState($state) {
+		$this->state = $state;
+		$this->save();
+	}
+
+	public function getPlayer($user_id) {
+		return $this->users->find($user_id);
 	}
 }

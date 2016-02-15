@@ -52,5 +52,10 @@ Route::group(['middleware' => 'web'], function () {
 
 		Route::get('/game/new', 'GameController@newGame')->name('new game');
 		Route::post('/game/new', 'GameController@createNewGame')->name('create new game');
+
+		Route::post('/game/{id}/settings', 'GameController@playerSettings')
+			->name('game player settings');
 		Route::get('/game/{id}', 'GameController@index')->name('game index');
+
+
 });

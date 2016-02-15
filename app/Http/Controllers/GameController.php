@@ -47,14 +47,31 @@ class GameController extends Controller
 	}
 
 	/**
-	 * POST - new game form 
+	 * POST - new game form
 	 */
 	public function createNewGame(Request $request) {
-		if(Game::createNew($request->all())) {
-			return redirect()->route('home');
+		if($game = Game::createNew($request->all())) {
+			return redirect()->route('game index', $game->id);
 		}
 
 		echo('failed to make game');
 		dd($request->all());
+	}
+
+	/**
+	 * When a user updates their settings
+	 */
+	public function playerSettings(Request $request, $id) {
+		// Grab the game instance
+		$game = Game::with('users')->findOrFail($id);
+
+		if($game->updatePlayerSettings($request->all())) {
+
+			if($game->checkPlayersReady()) {
+
+			}
+		}
+
+		return redirect()->route('game index', $game->id);
 	}
 }

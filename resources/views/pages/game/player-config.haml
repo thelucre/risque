@@ -1,17 +1,22 @@
 %h3 Prepare for battle
 
-!= Former::open()
+-$settings = $game->getPlayer($user->id)->pivot
 
-!= Former::text('name')->value($user->name)
+.player_settings
+	!= Former::open(route('game player settings', $game->id))
 
--$unused_colors = $game->unused_colors;
+	!= Former::text('name')->value($settings->name)->required()
 
--foreach(App\Game::$colors as $name=>$color)
-	.color-input(style="display: inline-block; background: #{$color};")
-		-if(array_key_exists($name,$unused_colors))
-			%input(type="radio" name="color" value=$color)
-		-else
-			%input(type="radio" name="color" value=$color disabled)
-!= Former::submit('Save Settings')
+	-$unused_colors = $game->unused_colors;
 
-!= Former::close()
+	-foreach(App\Game::$colors as $name=>$color)
+		.color-input(style="display: inline-block; background: #{$color};")
+			-$selected = ($settings->color == $name) ? 'checked' : ''
+			-if(array_key_exists($name,$unused_colors) || !empty($selected))
+
+				%input(type="radio" name="color" value=$name #{$selected} )
+
+	!= Former::hidden('user_id', $user->id)
+	!= Former::submit('Save Settings')
+
+	!= Former::close()
