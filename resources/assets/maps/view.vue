@@ -3,7 +3,8 @@
 .map_view
 	template(v-for="tile in map.tiles")
 		tile(:tile="tile" @click.prevent="selectTile(tile)"
-			:active="currentTile == tile")
+			:active="currentTile == tile"
+			:$map="$el")
 </template>
 
 <!-- ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– -->

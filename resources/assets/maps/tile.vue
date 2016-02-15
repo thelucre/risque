@@ -1,7 +1,10 @@
 <template lang='jade'>
 
 .map_tile(:style="tile.box"
-	:class="{active: active}")
+	:class="{active: active}"
+	@drag="onDrag"
+	@dragStart="onDragStart"
+	draggable="true")
 </template>
 
 <!-- ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -12,12 +15,47 @@ module.exports =
 	props: [
 		'tile'
 		'active'
+		'$map' # reference to the map's DOM element
 	]
 
 
 	ready: ->
-		console.log @tile
+		@$map = $(@$map)
+		@$el = $(@$el)
+		setTimeout =>
+			@mapDim =
+				w: @$map.outerWidth()
+				h: @$map.outerHeight()
+		, 300
 
+
+	methods:
+		onDragStart: (e) ->
+			@offset =
+				x: (e.pageX - @$el.offset().left)
+				y: (e.pageY - @$el.offset().top)
+			dragIcon = document.createElement 'img'
+			dragIcon.src = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
+			dragIcon.width = 100
+			e.dataTransfer.setDragImage dragIcon, -10, -10
+
+		onDrag: (e) ->
+
+
+			pos =
+				x: ((@$el.position().left + e.offsetX - @offset.x)/@mapDim.w*100).toFixed(4)
+				y: ((@$el.position().top + e.offsetY - @offset.y)/@mapDim.h*100).toFixed(4)
+
+			return if (pos.x < 0 or pos.y < 0)
+
+			@tile.box.left = pos.x+'%'
+			@tile.box.top = pos.y+'%'
+
+			#
+			# rel =
+			# 	x: (e.x - mapOffset.left )
+			# 	y: (e.y - mapOffset.top )
+			# console.log e.offsetX, e.offsetY
 
 </script>
 
