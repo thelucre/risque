@@ -8,6 +8,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Game;
 use App\User;
+use Auth;
+use App;
 
 class GameController extends Controller
 {
@@ -24,6 +26,8 @@ class GameController extends Controller
 	public function index($id = null) {
 		if(empty($id)) App::abort(404);
 		$game = Game::with('users')->findOrFail($id);
+		if(!$game->isValidPlayer(Auth::user()->id)) App::abort(404);
+
 		return layout('pages.game.index', ['game' => $game]);
 	}
 

@@ -1,7 +1,22 @@
 %h1 Game Board
 %h3=$game->name
 
--foreach($game->users as $user)
+-$states = App\Game::$states
+
+-if($game->state == $states['WAITING_FOR_PLAYERS'])
+	%p waiting for players
+
+-else if($game->state == $states['PLAYER_TURN'])
+	%p player turn
+
+-else if($game->state == $states['TURN_IN_PROGRESS'])
+	%p player turn in progress
+
+-else
+	%p game finished
+
+
+-#foreach($game->users as $user)
 	%li
 		%span(style="display: inline-block; height: 30px; width: 30px; background-color:#{$user->pivot->color}")
 		=$user->pivot->name

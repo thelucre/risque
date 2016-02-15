@@ -1,9 +1,10 @@
 #header
-	%a.logo(href=route('home')) RISQUE
+	%a.logo(href=route('index')) RISQUE
 
 	.nav
 		-if($user)
-			Welcome, #{$user->name}.
+			Welcome, #{$user->name} ::  
 			%a(href='/logout') Logout
+			%a(href=route('home')) Games
 		-else
 			%a(href='/login') Login

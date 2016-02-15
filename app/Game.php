@@ -14,6 +14,17 @@ class Game extends Model
 		'users' => 'required|array'
 	];
 
+	public static $states = [
+		// Players must accept the game and choose their name / color
+		'WAITING_FOR_PLAYERS' => 'waiting_for_players',
+		// Player turn cycled through
+		'PLAYER_TURN' => 'player_turn',
+		// Player is currently playing a turn
+		'TURN_IN_PROGRESS' => 'turn_in_progress',
+		// Game is over and winner is decided
+		'FINISHED' => 'finished',
+	];
+
 	public static $card_settings = [
 		'cycle' => 'Cycle',
 		'ramped' => 'Ramped',
@@ -44,11 +55,11 @@ class Game extends Model
 	public static function createNew($data = null) {
 		$game = self::create($data);
 		$game->neutrals = array_key_exists("neutrals",$data) ? 1 : 0;
+		$game->state = self::$states['WAITING_FOR_PLAYERS'];
 
 		// Link players to this game
 		foreach(User::all() as $i => $user) {
 			$game->users()->attach($user, [
-				'color' => Game::$colors[$i],
 				'name' => $user->name,
 				'turnt' => ($i==0),
 			]);
@@ -57,5 +68,15 @@ class Game extends Model
 		$game->save();
 
 		return true;
+	}
+
+	/**
+	 * Determines if a player is part of a given game
+	 */
+	public function isValidPlayer($user_id) {
+		$user = $this->users->filter(function($user) use ($user_id) {
+			return $user->id == 45;//$user_id;
+		});
+		return $user->count();
 	}
 }

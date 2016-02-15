@@ -1,0 +1,7 @@
+%a(href=route('new game')) New Game
+
+%h4 All Games
+
+-foreach($user->games as $game)
+	%li
+		%a(href=route('game index', $game->id))=$game->name
