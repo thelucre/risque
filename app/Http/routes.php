@@ -59,3 +59,9 @@ Route::group(['middleware' => 'web'], function () {
 
 
 });
+
+
+Route::group(['prefix' => 'admin', 'middleware' => 'web'], function () {
+		Route::get('/maps', 'MapController@index')->name('map index');
+		Route::post('/maps/save', 'MapController@save')->name('save map');
+});
