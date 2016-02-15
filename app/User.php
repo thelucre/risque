@@ -29,7 +29,13 @@ class User extends Authenticatable
 	 */
 	public function games()
 	{
-			return $this->belongsToMany('App\Game');
+			return $this->belongsToMany('App\Game')->withPivot(
+				'color',
+				'name',
+				'dead',
+				'turnt',
+				'booted'
+			);
 	}
 
 }

@@ -1,0 +1,8 @@
+.player-info
+	%hr
+	%h3 Game Details
+	%table
+		-foreach($game->users as $user)
+			%tr
+				%td.color(style="background-color: #{$user->pivot->color};")
+				%td=$user->pivot->name

@@ -4,7 +4,7 @@
 -$states = App\Game::$states
 
 -if($game->state == $states['WAITING_FOR_PLAYERS'])
-	%p waiting for players
+	!= View::make('pages.game.player-config', ['game' => $game])
 
 -else if($game->state == $states['PLAYER_TURN'])
 	%p player turn
@@ -15,6 +15,7 @@
 -else
 	%p game finished
 
+!= View::make('pages.game.player-info', ['game' => $game])
 
 -#foreach($game->users as $user)
 	%li

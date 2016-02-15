@@ -31,11 +31,11 @@ class Game extends Model
 	];
 
 	public static $colors = [
-		'#fb1c1c',
-		'#09f219',
-		'#1221f9',
-		'#f2e80b',
-		'#b70df2',
+		'Red' 		=> '#fb1c1c',
+		'Green' 	=> '#09f219',
+		'Blue' 		=> '#1221f9',
+		'Yellow'	=>'#f2e80b',
+		'Purple' 	=> '#b70df2',
 	];
 
 	/**
@@ -71,12 +71,21 @@ class Game extends Model
 	}
 
 	/**
-	 * Determines if a player is part of a given game
+	 * Determines if a player is part of this game
 	 */
 	public function isValidPlayer($user_id) {
-		$user = $this->users->filter(function($user) use ($user_id) {
-			return $user->id == 45;//$user_id;
-		});
-		return $user->count();
+		return $this->users->find($user_id)->count() ? true : false;
+	}
+
+
+	public function getUnusedColorsAttribute() {
+		$colors = self::$colors;
+		foreach($this->users as $user) {
+			if($color = $user->pivot->color) {
+				$key = array_search($color, $colors);
+				unset($colors[$key]);
+			}
+		}
+		return $colors;
 	}
 }

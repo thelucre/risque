@@ -1,0 +1,17 @@
+%h3 Prepare for battle
+
+!= Former::open()
+
+!= Former::text('name')->value($user->name)
+
+-$unused_colors = $game->unused_colors;
+
+-foreach(App\Game::$colors as $name=>$color)
+	.color-input(style="display: inline-block; background: #{$color};")
+		-if(array_key_exists($name,$unused_colors))
+			%input(type="radio" name="color" value=$color)
+		-else
+			%input(type="radio" name="color" value=$color disabled)
+!= Former::submit('Save Settings')
+
+!= Former::close()
