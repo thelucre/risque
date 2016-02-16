@@ -2,9 +2,11 @@
 
 .map_view
 	template(v-for="tile in map.tiles")
-		tile(:tile="tile" @click.prevent="selectTile(tile)"
+		tile(:tile="tile"
+			@click.prevent="selectTile(tile)"
 			:active="currentTile == tile"
-			:$map="$el")
+			:$map="$el"
+			:connections="connections")
 </template>
 
 <!-- ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -18,12 +20,14 @@ module.exports =
 
 	data: ->
 		currentTile: null
+		connections: []
 
 	components:
 		'tile': require './tile'
 
-	ready: ->
-		console.log 'map loaded'
+	events:
+		connectionsChanged: (connections) ->
+			@connections = connections
 
 	methods:
 		selectTile: (tile) ->

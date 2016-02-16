@@ -1,7 +1,7 @@
 <template lang='jade'>
 
 .map_tile(:style="tile.box"
-	:class="{active: active}"
+	:class="{active: active, connected: connected}"
 	@drag="onDrag"
 	@dragStart="onDragStart"
 	draggable="true")
@@ -12,22 +12,29 @@
 <script lang='coffee'>
 module.exports =
 
+	data: ->
+		connected: false
+
 	props: [
 		'tile'
 		'active'
+		'connections'
 		'$map' # reference to the map's DOM element
 	]
-
 
 	ready: ->
 		@$map = $(@$map)
 		@$el = $(@$el)
+
 		setTimeout =>
 			@mapDim =
 				w: @$map.outerWidth()
 				h: @$map.outerHeight()
 		, 300
 
+	watch:
+		connections: ->
+			@connected = _.filter(@connections, {'id': @tile.id}).length
 
 	methods:
 		onDragStart: (e) ->
@@ -40,11 +47,9 @@ module.exports =
 			e.dataTransfer.setDragImage dragIcon, -10, -10
 
 		onDrag: (e) ->
-
-
 			pos =
-				x: ((@$el.position().left + e.offsetX - @offset.x)/@mapDim.w*100).toFixed(4)
-				y: ((@$el.position().top + e.offsetY - @offset.y)/@mapDim.h*100).toFixed(4)
+				x: ((@$el.position().left + e.offsetX - @offset.x)/@mapDim.w*100).toFixed(2)
+				y: ((@$el.position().top + e.offsetY - @offset.y)/@mapDim.h*100).toFixed(2)
 
 			return if (pos.x < 0 or pos.y < 0)
 
@@ -66,8 +71,13 @@ module.exports =
 	background #999
 	border 1px solid black
 	position absolute
+	z-index 0
 
 	&.active
-		border-width 2px
+		border-color red !important
 		z-index 2
+
+	&.connected
+		border-color blue
+		z-index 1
 </style>
