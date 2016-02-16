@@ -1,8 +1,10 @@
 <template lang='jade'>
 
 .map_view
-	template(v-for="tile in map.tiles")
-		tile(:tile="tile"
+	template(v-for="tile in map.tiles" v-ref:tiles)
+		tile(
+			:tile="tile"
+			track-by="id"
 			@click.prevent="selectTile(tile)"
 			:active="currentTile == tile"
 			:$map="$el"
@@ -12,6 +14,8 @@
 <!-- ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
 <script lang='coffee'>
+keyManager = require 'utils/key-manager'
+
 module.exports =
 
 	props: [
@@ -22,6 +26,9 @@ module.exports =
 		currentTile: null
 		connections: []
 
+	ready: ->
+		console.log @
+
 	components:
 		'tile': require './tile'
 
@@ -31,8 +38,15 @@ module.exports =
 
 	methods:
 		selectTile: (tile) ->
-			@currentTile = tile
-			@$dispatch 'tileSelected', @currentTile
+			if keyManager.isShiftDown() and @currentTile?
+				target = @getTileComponentById @currentTile.id
+				target.$emit 'toggleConnection', tile
+			else
+				@currentTile = tile
+				@$dispatch 'tileSelected', @currentTile
+
+		getTileComponentById: (id) ->
+			return _.first _.filter(@$refs.tiles, {'tile': { 'id': id }})
 
 </script>
 

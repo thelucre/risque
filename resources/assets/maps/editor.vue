@@ -24,6 +24,7 @@
 
 <script lang='coffee'>
 stubs = require './stubs'
+keyManager = require 'utils/key-manager'
 
 module.exports =
 

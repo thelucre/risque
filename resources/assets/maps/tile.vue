@@ -56,11 +56,17 @@ module.exports =
 			@tile.box.left = pos.x+'%'
 			@tile.box.top = pos.y+'%'
 
-			#
-			# rel =
-			# 	x: (e.x - mapOffset.left )
-			# 	y: (e.y - mapOffset.top )
-			# console.log e.offsetX, e.offsetY
+	events:
+		toggleConnection: (tile) ->
+			# Tile can't be connected to itself
+			return if tile.id == @tile.id
+			index = @tile.connections.indexOf tile.id
+
+			if index == -1
+				@tile.connections.push tile.id
+			else
+				@tile.connections.splice index, 1
+
 
 </script>
 
@@ -74,10 +80,10 @@ module.exports =
 	z-index 0
 
 	&.active
-		border-color red !important
+		background red
 		z-index 2
 
 	&.connected
-		border-color blue
+		background blue
 		z-index 1
 </style>
