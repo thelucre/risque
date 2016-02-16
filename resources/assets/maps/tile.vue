@@ -78,6 +78,7 @@ module.exports =
 	border 1px solid black
 	position absolute
 	z-index 0
+	transition background 150ms 0ms ease-in-out
 
 	&.active
 		background red
