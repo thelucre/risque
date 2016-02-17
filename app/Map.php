@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Map extends Model
 {
+		// Convert map data to true json
+		protected $casts = ['data' => 'json'];
+
 		// Map data stub for creating maps
 		public static function stub() {
 			return json_encode([

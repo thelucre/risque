@@ -5,6 +5,7 @@
 	@drag="onDrag"
 	@dragStart="onDragStart"
 	draggable="true")
+		.label 45
 </template>
 
 <!-- ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -84,6 +85,13 @@ module.exports =
 	position absolute
 	z-index 0
 	transition background 150ms 0ms ease-in-out
+
+	.label
+		position absolute
+		top 50%
+		right 50%
+		transform translate(50%, -50%)
+		font-weight 700
 
 	.tiles &
 		&.active

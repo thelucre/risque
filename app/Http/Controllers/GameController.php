@@ -74,4 +74,14 @@ class GameController extends Controller
 
 		return redirect()->route('game index', $game->id);
 	}
+
+	
+	public function gameTest(Request $request, $id) {
+		// Grab the game instance
+		$game = Game::with('users')->findOrFail($id);
+		$d = App\Map::first()->data;
+		// $d['tiles'][] = [ 'farts' => '1'];
+		return count($d['tiles']) / count($game->users);
+
+	}
 }
