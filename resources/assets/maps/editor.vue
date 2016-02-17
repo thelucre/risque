@@ -4,15 +4,28 @@
 .map_editor
 	.controls
 		button(@click="makeNewTile") New Tile
-		button New Region
+		button(@click="makeNewRegion") New Region
 
 	.editor-wrap
 		map-view(v-el:map
-			:map="map")
+			:map="map"
+			:layout="tab"
+			:region="currentRegion")
 
 		.edit_pane
-			edit-tile(v-if="currentTile"
+			.tabs
+				.tab(@click="changeTab('tiles')"
+					:class="{ active: tab == 'tiles'}") Tiles
+				.tab(@click="changeTab('regions')"
+					:class="{ active: tab == 'regions'}") Regions
+
+			edit-tile(v-if="currentTile && tab == 'tiles'"
 				:tile="currentTile"
+				:map="map")
+
+			edit-region(v-if="tab == 'regions'"
+				v-ref:regionedit
+				:region="currentRegion"
 				:map="map")
 
 	.actions
@@ -34,11 +47,14 @@ module.exports =
 
 	data: ->
 		currentTile: null
+		currentRegion: null
+		tab: 'tiles'
 
 	components:
 		'map-view':   require './view'
 		'tile':       require './tile'
 		'edit-tile':  require './edit-tile'
+		'edit-region':  require './edit-region'
 
 	ready: ->
 		console.log 'map data: ', @map
@@ -47,9 +63,15 @@ module.exports =
 		tileSelected: (tile) ->
 			@currentTile = tile
 
+		regionSelected: (region) ->
+			@currentRegion = region
+
 		connectionsChanged: (connections) ->
 			@connections = connections
 			@$broadcast 'connectionsChanged', @connections
+
+		toggleRegionTile: (tile) ->
+			@$refs.regionedit.$emit 'toggleRegionTile', tile
 
 	methods:
 		save: ->
@@ -59,6 +81,14 @@ module.exports =
 
 		makeNewTile: ->
 			@map.tiles.push stubs.tile()
+
+		makeNewRegion: ->
+			stub = stubs.region()
+			@map.regions.push stub
+			@currentRegion = stub
+
+		changeTab: (tab) ->
+			@tab = tab
 
 
 </script>
@@ -79,4 +109,18 @@ module.exports =
 		top 0
 		right 0
 		width calc(100% - 800px)
+
+	.tabs
+		position absolute
+		transform translateY(-100%)
+		width 100%
+
+		.tab
+			display inline-block
+			padding 5px
+			background #ccc
+			border 1px solid
+
+			&.active
+				background white
 </style>

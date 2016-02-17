@@ -1,6 +1,6 @@
 <template lang='jade'>
 
-.map_view
+.map_view(class="{{ layout }}")
 	template(v-for="tile in map.tiles" v-ref:tiles)
 		tile(
 			:tile="tile"
@@ -8,7 +8,8 @@
 			@click.prevent="selectTile(tile)"
 			:active="currentTile == tile"
 			:$map="$el"
-			:connections="connections")
+			:connections="connections"
+			:region="region")
 </template>
 
 <!-- ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -20,14 +21,13 @@ module.exports =
 
 	props: [
 		'map'
+		'layout'
+		'region'
 	]
 
 	data: ->
 		currentTile: null
 		connections: []
-
-	ready: ->
-		console.log @
 
 	components:
 		'tile': require './tile'
@@ -38,12 +38,16 @@ module.exports =
 
 	methods:
 		selectTile: (tile) ->
-			if keyManager.isShiftDown() and @currentTile?
-				target = @getTileComponentById @currentTile.id
-				target.$emit 'toggleConnection', tile
-			else
-				@currentTile = tile
-				@$dispatch 'tileSelected', @currentTile
+			if @layout == 'tiles'
+				if keyManager.isShiftDown() and @currentTile?
+					target = @getTileComponentById @currentTile.id
+					target.$emit 'toggleConnection', tile
+				else
+					@currentTile = tile
+					@$dispatch 'tileSelected', @currentTile
+			else if @layout == 'regions'
+				return if not @region
+				@$dispatch 'toggleRegionTile', tile
 
 		getTileComponentById: (id) ->
 			return _.first _.filter(@$refs.tiles, {'tile': { 'id': id }})

@@ -1,7 +1,7 @@
 <template lang='jade'>
 
 .map_tile(:style="tile.box"
-	:class="{active: active, connected: connected}"
+	:class="{active: active, connected: connected, region: inRegion}"
 	@drag="onDrag"
 	@dragStart="onDragStart"
 	draggable="true")
@@ -19,6 +19,7 @@ module.exports =
 		'tile'
 		'active'
 		'connections'
+		'region'
 		'$map' # reference to the map's DOM element
 	]
 
@@ -67,6 +68,10 @@ module.exports =
 			else
 				@tile.connections.splice index, 1
 
+	computed:
+		inRegion: ->
+			return false if not @region
+			return @region.tiles.indexOf(@tile.id) >= 0
 
 </script>
 
@@ -80,11 +85,16 @@ module.exports =
 	z-index 0
 	transition background 150ms 0ms ease-in-out
 
-	&.active
-		background red
-		z-index 2
+	.tiles &
+		&.active
+			background red
+			z-index 2
 
-	&.connected
-		background blue
-		z-index 1
+		&.connected
+			background blue
+			z-index 1
+
+	.regions &
+		&.region
+			background green
 </style>
