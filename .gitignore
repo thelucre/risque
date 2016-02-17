@@ -6,3 +6,4 @@ Homestead.json
 /public/dist
 .env
 npm-debug.log
+/_docs
