@@ -81,6 +81,7 @@ module.exports =
 			return _.first _.filter( @users, id: @tile.user )
 
 		styleObject: ->
+			return {} if ! @tile.user?
 			return backgroundColor: '#ccc' if @tile.user == 'neutral'
 			return backgroundColor: @gameUser.pivot.color
 </script>
