@@ -7,4 +7,4 @@ app = new Vue
 
 	components:
 		'map-editor': 	require 'maps/editor'
-		'map-view':   	require 'maps/view'
+		'game-view':   	require 'game'

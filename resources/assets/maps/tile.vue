@@ -2,6 +2,7 @@
 
 .map_tile(:style="tile.box"
 	:class="{active: active, connected: connected, region: inRegion}"
+	v-bind:style="styleObject"
 	@drag="onDrag"
 	@dragStart="onDragStart"
 	draggable="true")
@@ -22,6 +23,7 @@ module.exports =
 		'connections'
 		'region'
 		'$map' # reference to the map's DOM element
+		'users' # reference to current game users
 	]
 
 	ready: ->
@@ -74,6 +76,13 @@ module.exports =
 			return false if not @region
 			return @region.tiles.indexOf(@tile.id) >= 0
 
+		gameUser: ->
+			return null if not @users? or not @tile.user?
+			return _.first _.filter( @users, id: @tile.user )
+
+		styleObject: ->
+			return backgroundColor: '#ccc' if @tile.user == 'neutral'
+			return backgroundColor: @gameUser.pivot.color
 </script>
 
 <!-- ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– -->

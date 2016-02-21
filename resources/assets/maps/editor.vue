@@ -36,7 +36,7 @@
 <!-- ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– -->
 
 <script lang='coffee'>
-stubs = require './stubs'
+stubs = require 'utils/stubs'
 keyManager = require 'utils/key-manager'
 
 module.exports =
