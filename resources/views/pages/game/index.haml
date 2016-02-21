@@ -8,6 +8,8 @@
 
 -else if($game->state == $states['PLAYER_TURN'])
 	%p player turn
+	%map-view(:map=$game->getJsonMap()
+		layout="game")
 
 -else if($game->state == $states['TURN_IN_PROGRESS'])
 	%p player turn in progress

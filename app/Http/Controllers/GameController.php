@@ -75,13 +75,71 @@ class GameController extends Controller
 		return redirect()->route('game index', $game->id);
 	}
 
-	
+
 	public function gameTest(Request $request, $id) {
 		// Grab the game instance
 		$game = Game::with('users')->findOrFail($id);
-		$d = App\Map::first()->data;
-		// $d['tiles'][] = [ 'farts' => '1'];
-		return count($d['tiles']) / count($game->users);
+		// Use the first map for now
+		$d = App\Map::first()->dataAsJson();
+
+		// TODO: Add column to map table for default units per tile
+		$per_tile = 3;
+
+		// TODO: Add column to map table for neutral density
+		$neutral_density = 0.25;
+
+		$user_count = $game->users->count();
+
+		$tile_count = count($d['tiles']);
+
+		$tiles_for_users = $tile_count;
+		$tiles_for_neutrals = 0;
+
+		if($game->neutrals) {
+			$tiles_for_neutrals = floor($tile_count * $neutral_density);
+			$tiles_for_users = $tile_count - $tiles_for_neutrals;
+
+			// just in case, if total tiles > actual. reduce neutral tile count
+			$tiles_for_neutrals -= $tile_count - $tiles_for_users - $tiles_for_neutrals;
+		}
+
+		shuffle($d['tiles']);
+
+		$game_tiles = [];
+
+		foreach($game->users as $user) {
+
+		}
+
+		// loop over tiles $i=>
+			//if neutrals && tiles for neutrals > 0
+			// tile->user = 'neutral'
+			// tile->units = $per_tile
+			// tiles for neutrals --
+			// else
+			// index = $i % $game->users->count()
+			// tile->user = $game->users->get(index)
+			// tile->units = $per_tile
+			//game_tiles push tile
+		foreach($d['tiles'] as $i=>$tile) {
+			if($tiles_for_neutrals-- > 0) {
+				$tile['user'] = 'neutral';
+			} else {
+				$index = $i % $game->users->count();
+				$tile['user'] = $game->users->get($index)->id;
+			}
+			$tile['units'] = $per_tile;
+			$game_tiles[] = $tile;
+		}
+
+		$d['tiles'] = $game_tiles;
+
+		$game_data = [
+			'map' => $d,
+		];
+		$game->data = json_encode($game_data);
+		$game->save();
+		return 'farts';//count($d->tiles) / count($game->users);
 
 	}
 }

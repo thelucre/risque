@@ -5,7 +5,7 @@
 	@drag="onDrag"
 	@dragStart="onDragStart"
 	draggable="true")
-		.label 45
+		.label {{tile.units}}
 </template>
 
 <!-- ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -105,4 +105,8 @@ module.exports =
 	.regions &
 		&.region
 			background green
+
+	// .game &
+	//
+
 </style>

@@ -3,9 +3,10 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Base;
 use App\User;
 
-class Game extends Model
+class Game extends Base
 {
 
 	protected $fillable = ['name', 'card_type', 'neutrals'];
@@ -132,5 +133,14 @@ class Game extends Model
 
 	public function getPlayer($user_id) {
 		return $this->users->find($user_id);
+	}
+
+	public function getJsonMap() {
+		$data = $this->dataAsJson();
+		return json_encode($data['map']);
+	}
+
+	public function getColorsAttribute() {
+		return json_encode(self::$colors);
 	}
 }

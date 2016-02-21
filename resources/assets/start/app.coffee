@@ -6,4 +6,5 @@ app = new Vue
 	el: '#app'
 
 	components:
-		'map-editor': require 'maps/editor'
+		'map-editor': 	require 'maps/editor'
+		'map-view':   	require 'maps/view'
