@@ -76,9 +76,12 @@ class GameController extends Controller
 	}
 
 
-	public function gameTest(Request $request, $id) {
+	public function gameReset(Request $request, $id) {
 		// Grab the game instance
 		$game = Game::with('users')->findOrFail($id);
+		if($game->state == 'waiting_for_players')
+			return 'cant be state `waiting_for_players`';
+
 		// Use the first map for now
 		$d = App\Map::first()->dataAsJson();
 
@@ -86,7 +89,7 @@ class GameController extends Controller
 		$per_tile = 3;
 
 		// TODO: Add column to map table for neutral density
-		$neutral_density = 0.25;
+		$neutral_density = 0.3;
 
 		$user_count = $game->users->count();
 
@@ -111,16 +114,6 @@ class GameController extends Controller
 
 		}
 
-		// loop over tiles $i=>
-			//if neutrals && tiles for neutrals > 0
-			// tile->user = 'neutral'
-			// tile->units = $per_tile
-			// tiles for neutrals --
-			// else
-			// index = $i % $game->users->count()
-			// tile->user = $game->users->get(index)
-			// tile->units = $per_tile
-			//game_tiles push tile
 		foreach($d['tiles'] as $i=>$tile) {
 			if($tiles_for_neutrals-- > 0) {
 				$tile['user'] = 'neutral';
@@ -139,7 +132,7 @@ class GameController extends Controller
 		];
 		$game->data = json_encode($game_data);
 		$game->save();
-		return 'farts';//count($d->tiles) / count($game->users);
 
+		return redirect()->route('game index', $game->id);
 	}
 }

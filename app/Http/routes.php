@@ -56,7 +56,7 @@ Route::group(['middleware' => 'web'], function () {
 		Route::post('/game/{id}/settings', 'GameController@playerSettings')
 			->name('game player settings');
 		Route::get('/game/{id}', 'GameController@index')->name('game index');
-		Route::get('/game/test/{id}', 'GameController@gameTest')->name('game test');
+		Route::get('/game/reset/{id}', 'GameController@gameReset')->name('game reset');
 
 
 });
